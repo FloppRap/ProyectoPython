@@ -1,16 +1,7 @@
 from CINE import Cine
 from SUPERSU import Mantener
 
+prueba1 = Mantener()
 
+prueba1.ModificarCartelera()
 print(Cine.cartelera)
-print(Cine.cantidadButacas)
-print(Cine.cantidadClientes)
-
-probar = Mantener()
-
-probar.LimpiarRegistroClientes()
-probar.ModificarButacas()
-
-print(Cine.cartelera)
-print(Cine.cantidadButacas)
-print(Cine.cantidadClientes)

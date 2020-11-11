@@ -1,7 +1,7 @@
 class Cine:
     cartelera = {
-        "Mickey":[0,100],
-        "Ted":[18,100]
+        "Mickey":[0],
+        "Ted":[18]
     }
     cantidadButacas = 100
     cantidadClientes = 45

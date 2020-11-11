@@ -35,11 +35,11 @@ class Mantener:
             pelicula = input("Ingrese la pelicula: ")
             edad = int(input("Edad correspondiente (1.ATP),(2.+13),(3.+18) :"))
             if edad == 1:
-                rango = [0,100]
+                rango = [0]
             elif edad == 2:
-                rango = [13,100]
+                rango = [13]
             elif edad == 3:
-                rango = [18,100]
+                rango = [18]
             else:
                 print("ERROR")
             self.cartelera.setdefault(pelicula,rango)
@@ -49,11 +49,11 @@ class Mantener:
             pelicula = input("Cual desea modificar? ")
             edad = int(input("Edad correspondiente (1.ATP),(2.+13),(3.+18) :"))
             if edad == 1:
-                rango = [0,100]
+                rango = [0]
             elif edad == 2:
-                rango = [13,100]
+                rango = [13]
             elif rango == 3:
-                rango = [18,100]
+                rango = [18]
             else:
                 print("ERROR")
 
