@@ -1,10 +1,8 @@
 class Cine:
-    cartelera = {
-        "Mickey":[0],
-        "Ted":[18]
-    }
-    cantidadButacas = 100
-    cantidadClientes = 45
-
     def __init__(self):
-        pass
+        self.cartelera = {
+            "Mickey":0,
+            "Ted":18
+        }
+        self.cantidadButacas = 100
+        self.cantidadClientes = 45
