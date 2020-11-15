@@ -1,29 +1,52 @@
 from CINE import Cine
-from SUPERSU import Mantener
-
+from ADMIN import Admin
 
 #Alguas Variables
+opciones = ""
 opcBucle = True
-opciones = str()
-nuevaCantidad = int()
+opcSala = int()
+cantPersonas = int()
 
-prueba1 = Mantener()
 
-while opcBucle:
-    print("\n")
-    print("1-Modificar Pelis\n")
-    print("2-Limpiar registro\n")
-    print("3-Modificar butacas\n")
-    print("S/s-Salir")
-    opciones = input("\nIngrese una opcion: ")
+"""
+print(f"Clientes maximos en la fecha correspondiente : {prueba.cantClientes}")
+"""
 
-    if (opciones == "1"):
-        print("\n")
-        prueba1.ModificarCartelera()
-    elif (opciones == "2"):
-        prueba1.LimpiarRegistroClientes()
-    elif (opciones == "3"):
-        nuevaCantidad = int(input("Ingrese la nueva cantidad de butacas : "))
-        prueba1.ModificarButacas(nuevaCantidad)
-    elif (opciones.lower() == "s"):
-        opcBucle = False 
+prueba = Cine()
+
+adm = Admin()
+
+print("Salas: 1-Chica, 2-Grande")
+opcSala = int(input("Escoja una sala : "))
+
+if opcSala == 1:
+      prueba.salaCine.ElegirSala(1)
+elif opcSala == 2:
+      prueba.salaCine.ElegirSala(2)
+
+while opcBucle == True:
+      
+      print("""
+            1.Ver Cartelera
+            2.Ver Disponibilidad
+            3.Comprar
+            4.Registro de Clientes
+            (s,S).Salir
+      """)
+      opciones = input("\nIngrese una Opcion: ")
+
+      if opciones == '1':
+            print(f" [pelicula:edad minima] : {prueba.cartelera}")
+      elif opciones == '2':
+            print(f"\nButacas Libres : {prueba.salaCine.sala.cantButacas}")
+            print(f"Butacas Ocupadas : {prueba.salaCine.sala.cantButacasOcupadas}")
+      elif opciones == '3':
+            if adm.ComprobarDisponibilidad(prueba):
+                  cantPersonas = int(input("Cuantas personas son: "))
+                  adm.Comprar(prueba,cantPersonas)
+      elif opciones == '4':
+            adm.GuardarRegistroClientes(prueba)
+      elif (opciones == 's' or opciones == 'S'):
+            opcBucle = False
+else:
+      print("\nGracias, vuelva pronto!")
