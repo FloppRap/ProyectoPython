@@ -30,7 +30,8 @@ while opcBucle == True:
             1.Ver Cartelera
             2.Ver Disponibilidad
             3.Comprar
-            4.Registro de Clientes
+            4.Guardar Registro de Clientes
+            5.Mostrar Registro de Clientes
             (s,S).Salir
       """)
       opciones = input("\nIngrese una Opcion: ")
@@ -46,6 +47,8 @@ while opcBucle == True:
                   adm.Comprar(prueba,cantPersonas)
       elif opciones == '4':
             adm.GuardarRegistroClientes(prueba)
+      elif opciones == '5':
+            adm.VerRegistroClientes(prueba)
       elif (opciones == 's' or opciones == 'S'):
             opcBucle = False
 else:
