@@ -1,7 +1,11 @@
-import datetime
+#import datetime
+from CLIENTE import Cliente, Insertar
 
-class Admin:
+class Admin(Cliente):
     def __init__(self):
+        #valores por defecto, no se vera en el proceso de uso
+        self.clientes = Cliente("Clientes",0,0,0)
+
         self.Registro = open("Registro de Clientes.txt","wt")
         self.Registro.write("{Cantidad de Clientes : [dia, mes]}\n")
         self.Registro.close()
@@ -12,27 +16,14 @@ class Admin:
         else:
             return False
 
-    def Comprar(self,prueba,cantidad):
+    def Comprar(self,prueba,cantidad, apellido, dia, mes):
         if prueba.salaCine.sala.cantButacas >= cantidad:
+            
             prueba.salaCine.sala.cantButacas -= cantidad
             prueba.salaCine.sala.cantButacasOcupadas += cantidad
 
-            ahora = datetime.datetime.now()
-            prueba.cantClientes.setdefault(cantidad,[ahora.day,ahora.month])
+            Insertar(self.clientes,Cliente(apellido,cantidad,dia,mes))
 
             print("\nCompra exitosa!")
         else:
             print("\nNo hay la cantidad de butacas libres que necesita.")
-
-    def GuardarRegistroClientes(self,prueba):
-        self.Registro = open("Registro de Clientes.txt","at")
-        self.Registro.write(str(prueba.cantClientes))
-        self.Registro.close()
-
-    def VerRegistroClientes(self,prueba):
-        self.Registro = open("Registro de Clientes.txt","r")
-        
-        for linea in self.Registro:
-            print(linea)
-
-        self.Registro.close()

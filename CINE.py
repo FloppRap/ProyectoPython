@@ -9,4 +9,3 @@ class Cine(Salas):
         }
         #instancia de Salas como atributo de Cine
         self.salaCine = Salas()
-        self.cantClientes = {}
