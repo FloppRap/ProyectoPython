@@ -1,6 +1,10 @@
 from CINE import Cine
 from ADMIN import Admin
-from REGISTRO import BuscarClientePorFecha, GuardarRegistro
+from REGISTRO import Registro
+from DATOCLIENTE import DATOS
+
+from moduloComprar import modComprar
+from moduloDisponibilidad import disponibilidad
 
 #Alguas Variables
 opciones = ""
@@ -11,21 +15,13 @@ apellido = ""
 dia = int()
 mes = int()
 
-registro = open("registro.txt","wt")
-registro.write("Apellido \t Cantidad \t Fecha \n")
-registro.close()
-
-
-
 
 #Instancias
-prueba = Cine()
-prueba.salaCine.ElegirSala(1)
+EntidadCine = Cine()
 
-prueba2 = Cine()
-prueba2.salaCine.ElegirSala(2)
+EntidadAdmin = Admin()
 
-adm = Admin()
+EntidadDatos = DATOS()
 
 
 while opcBucle == True:
@@ -45,74 +41,87 @@ while opcBucle == True:
       opciones = input("\nIngrese una Opcion: ")
 
       if opciones == '1':
-            print(f" [pelicula:edad minima] : {prueba.cartelera}")
+
+            EntidadCine.DesplegarCartelera()
       
       elif opciones == '2':
-            print(f"""\nSala Comun :
-                  Butacas Libres -> {prueba.salaCine.sala.cantButacas}
-                  Butacas Ocupadas -> {prueba.salaCine.sala.cantButacasOcupadas}
-                  Incluye 3D -> {prueba.salaCine.sala.TresDe}
-                  Incluye servicio de comida -> {prueba.salaCine.sala.servicioComida}""")
-
-            print(f"""Sala Vip :
-                  Butacas Libres -> {prueba2.salaCine.sala.cantButacas}
-                  Butacas Ocupadas -> {prueba2.salaCine.sala.cantButacasOcupadas}
-                  Incluye 3D -> {prueba2.salaCine.sala.TresDe}
-                  Incluye servicio de comida -> {prueba2.salaCine.sala.servicioComida}""")
+            
+            disponibilidad(EntidadCine)
       
       elif opciones == '3':
-            if adm.ComprobarDisponibilidad(prueba):
 
-                  sala = input("Sala Comun(1) o Sala Vip(2) ? ")
-                  print("")
+            print("""
+                  1-Infantiles
+                  2-Adolescentes
+                  3-Adultos
+                  """)
+            
+            pegi = int(input("\nIngrese una categoria : "))
 
-                  if (sala == '1'):
-                        dia = int(input("Ingrese el dia de compra: "))
-                        while (dia < 1 or dia > 31):
-                              dia = int(input("Ingrese nuevamente el dia de compra: "))
+            while( pegi < 1 or pegi > 3):
+                  pegi = int(input("\nReingrese una categoria : "))
 
-                        mes = int(input("Ingrese el mes de compra: "))
-                        while (mes < 1 or mes > 12):
-                              mes = int(input("Ingrese nuevamente el mes de compra: "))
+            if pegi == 1:
+                  cont = 1
+                  for peli in EntidadCine.PeliChicos:
+                        print(f"{cont}-{peli}")
+                        cont += 1
+                  opcPeli = int(input("\nEscoja una pelicula : "))
+                  EntidadDatos.Pelicula = EntidadCine.PeliChicos[opcPeli-1]
 
-                        cantPersonas = int(input("Cuantas personas son: "))
-                        apellido = input("\nIngrese el apellido del responsable: ")
+            elif pegi == 2:
+                  cont = 1
+                  for peli in EntidadCine.PeliAdolescentes:
+                        print(f"{cont}-{peli}")
+                        cont += 1
+                  opcPeli = int(input("\nEscoja una pelicula : "))
+                  EntidadDatos.Pelicula = EntidadCine.PeliChicos[opcPeli-1]
 
-                        adm.Comprar(prueba,cantPersonas,apellido,dia,mes)
-                  elif (sala == '2'):
-                        dia = int(input("Ingrese el dia de compra: "))
-                        while (dia < 1 or dia > 31):
-                              dia = int(input("Ingrese nuevamente el dia de compra: "))
+            else:
+                  cont = 1
+                  for peli in EntidadCine.PeliAdultos:
+                        print(f"{cont}-{peli}")
+                        cont += 1
+                  opcPeli = int(input("\nEscoja una pelicula : "))
+                  EntidadDatos.Pelicula = EntidadCine.PeliChicos[opcPeli-1]
 
-                        mes = int(input("Ingrese el mes de compra: "))
-                        while (mes < 1 or mes > 12):
-                              mes = int(input("Ingrese nuevamente el mes de compra: "))
-
-                        cantPersonas = int(input("Cuantas personas son: "))
-                        apellido = input("\nIngrese el apellido del responsable: ")
-
-                        adm.Comprar(prueba2,cantPersonas,apellido,dia,mes)
+            modComprar(EntidadAdmin,EntidadCine,EntidadDatos)
 
       elif opciones == '4':
+
             print("\n")
-            adm.MostrarClientes()
+            EntidadAdmin.MostrarClientes()
 
       elif opciones == '5':
-            dia = int(input("Ingrese el dia de compra: "))
-            while (dia < 1 or dia > 31):
-                  dia = int(input("Ingrese nuevamente el dia de compra: "))
-                  
-            mes = int(input("Ingrese el mes de compra: "))
-            while (mes < 1 or mes > 12):
-                  mes = int(input("Ingrese nuevamente el mes de compra: "))
             
-            print(f"\nFecha -> dia: {dia}, mes: {mes}")
-            BuscarClientePorFecha(adm.clientes,dia,mes)
+            opcBusqueda = int(input("\nBuscar por '1-Fecha' o '2-Apellido' : "))
+
+            while (opcBusqueda < 1 or opcBusqueda > 2):
+                  print("\nReingrese.\n")
+                  opcBusqueda = int(input("Buscar por '1-Fecha' o '2-Apellido' : "))
+
+            if opcBusqueda == 1:
+                  print("\nBuscar por Fecha:\n")
+
+                  dia = int(input("\nIngrese el dia de compra: "))
+                  while (dia < 1 or dia > 31):
+                        dia = int(input("Ingrese nuevamente el dia de compra: "))
+
+                  mes = int(input("\nIngrese el mes de compra: "))
+                  while (mes < 1 or mes > 12):
+                        mes = int(input("Ingrese nuevamente el mes de compra: "))
+
+                  Fecha = {dia:mes}
+
+                  EntidadAdmin.BuscarPorFecha(Fecha)
+                  
+            else:
+                  print("\nBuscar por apellido:\n")
+                  apellido_a_buscar = input("\nIngrese un apellido que desea buscar : ")
+                  EntidadAdmin.Buscar(apellido_a_buscar)
 
       elif opciones == '6':
-            registro = open("registro.txt","at")
-            GuardarRegistro(adm.clientes,registro)
-            registro.close()
+            EntidadAdmin.Guardar()
 
       elif (opciones == 's' or opciones == 'S'):
             opcBucle = False

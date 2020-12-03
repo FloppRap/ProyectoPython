@@ -1,41 +1,65 @@
 from CLIENTE import Cliente
-from REGISTRO import Registro ,Insertar
-from TIPOSALAS import SalaChica, SalaGrande
+from REGISTRO import Registro, Insertar, BuscarPorFecha, GuardarRegistro
 
-class Admin(Cliente):
+class Admin:
     def __init__(self):
-        #valores por defecto, no se vera en el proceso de uso
-        self.clientes = Registro("Clientes",0,0,0,"Salas")
-        self.clientesLista = Cliente()
+        self.ListaClientes = Cliente()
+        self.RegistroClientes = Registro("Apellido",{0:0},"Sala","Pelicula")
 
-    def ComprobarDisponibilidad(self,prueba):
-        if prueba.salaCine.sala.cantButacas > 0:
+    def ComprobarDisponibilidad(self,EntidadCine):
+        if EntidadCine.salaVip.cantButacasLibres > 0 and EntidadCine.salaComun.cantButacasLibres:
             return True
         else:
             return False
-
+    
     def MostrarClientes(self):
-        self.clientesLista.mostrarClientes()
+        self.ListaClientes.mostrarClientes()
 
-    def Comprar(self,prueba,cantidad, apellido, dia, mes):
-        if prueba.salaCine.sala.cantButacas >= cantidad:
+    #agregar pedido luego
+    def Comprar(self,EntidadCine,EntidadDatos):
+        if self.ComprobarDisponibilidad:
             
-            #Guardar registro de clientes
-            prueba.salaCine.sala.cantButacas -= cantidad
-            prueba.salaCine.sala.cantButacasOcupadas += cantidad
+            if EntidadDatos.Sala == "COMUN":
+                #Agregar cliente con dato minimo
+                EntidadCine.salaComun.cantButacasLibres -= 1
+                EntidadCine.salaComun.cantButacasOcupadas += 1
 
-            if(isinstance(prueba.salaCine.sala,SalaChica)):
-                sala = "Comun"
-            elif (isinstance(prueba.salaCine.sala,SalaGrande)):
-                sala = "Vip"
+                self.ListaClientes.cargarCliente(EntidadDatos.Apellido,EntidadDatos.Sala)
 
-            Insertar(self.clientes,Registro(apellido,cantidad,dia,mes,sala))
-
-
-            #Guardar lista de clientes basica
-            self.clientesLista.cargarCliente(apellido,cantidad)
+                #Agregar cliente con todos los datos
             
+                Insertar(self.RegistroClientes, Registro(EntidadDatos.Apellido,EntidadDatos.Fecha,EntidadDatos.Sala,EntidadDatos.Pelicula))
 
-            print("\nCompra exitosa!")
+            else:
+                #Agregar cliente con dato minimo
+                EntidadCine.salaVip.cantButacasLibres -= 1
+                EntidadCine.salaVip.cantButacasOcupadas += 1
+
+                self.ListaClientes.cargarCliente(EntidadDatos.Apellido,EntidadDatos.Sala)
+
+                #Agregar cliente con todos los datos
+
+                Insertar(self.RegistroClientes, Registro(EntidadDatos.Apellido,EntidadDatos.Fecha,EntidadDatos.Sala,EntidadDatos.Pelicula))
+        
         else:
-            print("\nNo hay la cantidad de butacas libres que necesita.")
+            print("Lo sentimos, no hay butacas disponible en la sala!")
+
+    def Buscar(self,apellido):
+        self.ListaClientes.BuscarPorApellido(apellido)
+
+    def BuscarPorFecha(self,fecha):
+        BuscarPorFecha(self.RegistroClientes,fecha)
+
+    def Guardar(self):
+
+        registro = open("Registro de clientes.txt","w")
+
+        GuardarRegistro(self.RegistroClientes,registro)
+
+        registro.close()
+
+    #No sera utilizada en la practica, solo estaba para comprobar
+    """
+    def mostrar(self):
+        MostrarTodo(self.RegistroClientes)
+    """

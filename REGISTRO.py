@@ -1,21 +1,20 @@
-class Registro:
-    def __init__(self,apellido,cantidad,dia,mes,sala):
-        # crea un nodo
+class Registro():
+    def __init__(self,apellido,fecha,sala,pelicula):
+        #Nodos
         self.izq = None
         self.der = None
 
-        # atributos de clientes
-        self.apellido = apellido
-        self.cantidad = cantidad
-        self.fecha = {}
-        self.fecha.setdefault(dia,mes)
-        self.salaAsistida = sala
+        #Atributos
+        self.Apellido = apellido
+        self.Fecha = fecha
+        self.SalaAsistida = sala
+        self.Pelicula = pelicula
 
 def Insertar(raiz,nodo):
     if raiz is None:
         raiz = nodo
     else:
-        if (raiz.apellido) < (nodo.apellido):
+        if (raiz.Apellido) < (nodo.Apellido):
             if raiz.der is None:
                 raiz.der = nodo
             else:
@@ -26,22 +25,42 @@ def Insertar(raiz,nodo):
             else:
                 Insertar(raiz.izq,nodo)
 
-def BuscarClientePorFecha(raiz,dia,mes):
+#Funcion de prueba, no sera ejecutada en la practica
+def MostrarTodo(raiz):
     if raiz is not None:
-        BuscarClientePorFecha(raiz.izq,dia,mes)
+        MostrarTodo(raiz.izq)
         
-        if (dia in raiz.fecha) and (mes in raiz.fecha.values()):
-            print(f"Apellido del responsable: {raiz.apellido}, Cantidad de personas: {raiz.cantidad}, sala asistida: '{raiz.salaAsistida}'")
+        if (raiz.apellido != "Apellido"):
+            print(f"""
+                    Apellido : {raiz.Apellido}
+                    Fecha : {raiz.Fecha}
+                    Sala Asistida : {raiz.SalaAsistida}
+                    Pelicula vista : {raiz.Pelicula}""")
 
-        BuscarClientePorFecha(raiz.der,dia,mes)
+        MostrarTodo(raiz.der)
 
+def BuscarPorFecha(raiz,fecha):
+    if raiz is not None:
+        BuscarPorFecha(raiz.izq,fecha)
+        
+        if (raiz.Apellido != "Apellido"):
+            if fecha == raiz.Fecha:
+                print(f"""
+                        Apellido : {raiz.Apellido}
+                        Fecha : {raiz.Fecha}
+                        Sala Asistida : {raiz.SalaAsistida}
+                        Pelicula vista : {raiz.Pelicula}""")
+
+        BuscarPorFecha(raiz.der,fecha)
 
 def GuardarRegistro(raiz,registro):
-    
+
     if raiz is not None:
+        
         GuardarRegistro(raiz.izq,registro)
 
-        if (raiz.apellido != "Clientes"):
-            registro.write(raiz.apellido + "\t\t" + f"{raiz.cantidad}" + "\t\t" + f"{raiz.fecha}" + "\n")
+        if (raiz.Apellido != "Apellido"):
+
+            registro.write(f"Apellido: {raiz.Apellido}, Fecha: {raiz.Fecha}, Sala Asistida: {raiz.SalaAsistida}, Pelicula Vista: {raiz.Pelicula} \n")
 
         GuardarRegistro(raiz.der,registro)

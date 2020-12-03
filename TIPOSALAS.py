@@ -1,31 +1,19 @@
-class Salas():
-    def __init__(self):
-        self.cantButacas = int()
-        self.cantButacasOcupadas = int()
-    
-    def ElegirSala(self,opcSala):
-        if opcSala == 1:
-            self.sala = SalaChica()
-        elif opcSala == 2:
-            self.sala = SalaGrande()
-
-    
-
 #Tipos de Salas
-class SalaChica(Salas):
+
+class COMUN():
     def __init__(self):
-        super().__init__()
-        self.cantButacas = 50
-        self.cantButacasOcupadas = int()
 
-        self.servicioComida = "No"
-        self.TresDe = "No"
+        self.cantButacasLibres = 50
+        self.cantButacasOcupadas = 0
 
-class SalaGrande(Salas):
+        self.servicioComida = False
+        self.TresDe = False
+
+class VIP():
     def __init__(self):
-        super().__init__()
-        self.cantButacas = 100
-        self.cantButacasOcupadas = int()
 
-        self.servicioComida = "Si"
-        self.TresDe = "Si"
+        self.cantButacasLibres = 100
+        self.cantButacasOcupadas = 0
+
+        self.servicioComida = True 
+        self.TresDe = True

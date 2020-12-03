@@ -1,3 +1,0 @@
-Apellido 	 Cantidad 	 Fecha 
-ds		5		{6: 6}
-ki		6		{9: 8}
